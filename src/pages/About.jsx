@@ -61,11 +61,11 @@ export default function About() {
 
           {/* ── Bio + skills + timeline ── */}
           <div>
-            <p className="font-body text-[.85rem] sm:text-[.9rem] font-bold leading-loose text-white/80 mb-4">
+            <p className="font-body rounded-xl backdrop-blur-sm text-[.85rem] sm:text-[.9rem] font-bold leading-loose text-white/80 mb-4">
               A multi-disciplinary creator orbiting the edges of 3D rendering and graphic design.
               Every project is a new galaxy — unexplored, infinite and entirely its own.
             </p>
-            <p className="font-body text-[.85rem] sm:text-[.9rem] font-bold leading-loose text-white/80">
+            <p className="font-body rounded-xl backdrop-blur-sm text-[.85rem] sm:text-[.9rem] font-bold leading-loose text-white/80">
               Based in the physical world, working across every dimension. From a single guitar riff to a full
               motion-graphic universe — if it can be imagined, it gets built.
             </p>
@@ -81,7 +81,7 @@ export default function About() {
                   <div className="flex flex-wrap gap-2">
                     {items.map(item => (
                       <span key={item}
-                        className="font-body text-[.65rem] sm:text-[.68rem] font-medium tracking-[.06em] sm:tracking-[.08em] px-2.5 sm:px-3 py-1 border border-navy-pale/12 text-navy-pale/75 hover:border-violet/40 hover:text-white hover:bg-violet/[.06] transition-all cursor-default">
+                        className="backdrop-blur-sm font-body text-[.65rem] sm:text-[.68rem] font-medium tracking-[.06em] sm:tracking-[.08em] px-2.5 sm:px-3 py-1 border border-navy-pale/12 text-navy-pale/75 hover:border-violet/40 hover:text-white hover:bg-violet/[.06] transition-all cursor-default">
                         {item}
                       </span>
                     ))}
@@ -91,7 +91,7 @@ export default function About() {
             </div>
 
             {/* Timeline */}
-            <div className="mt-10 sm:mt-12 border-l border-navy-pale/15 pl-6 sm:pl-8">
+            <div className="mt-10 rounded-xl backdrop-blur-sm sm:mt-12 border-l border-navy-pale/15 pl-6 sm:pl-8">
               {TIMELINE.map(({ year, title, desc }) => (
                 <div key={year} className="relative mb-7 sm:mb-9 timeline-dot">
                   <div className="font-display text-[.52rem] sm:text-[.55rem] tracking-[.18em] sm:tracking-[.2em] text-coral mb-1">{year}</div>

@@ -51,13 +51,13 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-10 lg:gap-20 mt-12 lg:mt-16">
 
           {/* Info + socials */}
-          <div className="reveal reveal-delay-2">
+          <div className=" reveal reveal-delay-2">
             {INFO.map(({ icon, label, val }) => (
               <div key={label} className="flex items-start gap-4 mb-6 sm:mb-8">
                 <div className="w-8 h-8 sm:w-9 sm:h-9 border border-navy-pale/12 flex items-center justify-center flex-shrink-0 text-violet-light font-display text-[.52rem]">
                   {icon}
                 </div>
-                <div>
+                <div className='backdrop-blur-sm'>
                   <div className="font-display text-[.5rem] tracking-[.16em] uppercase text-navy-pale/60 mb-1">{label}</div>
                   <div className="font-body text-[.78rem] sm:text-[.82rem] tracking-[.03em] text-white">{val}</div>
                 </div>
@@ -67,9 +67,9 @@ export default function Contact() {
             <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-6 sm:mt-8">
               {SOCIALS.map(({ name, dot, href }) => (
                 <a key={name} href={href}
-                  className="flex items-center gap-2 sm:gap-3 border border-navy-pale/12 px-3 sm:px-4 py-2.5 sm:py-3 hover:border-violet/40 hover:bg-violet/[.06] transition-all no-underline">
+                  className="flex hover:text-white  backdrop-blur-sm items-center gap-2 sm:gap-3 border border-navy-pale/12 px-3 sm:px-4 py-2.5 sm:py-3 hover:border-violet/40 hover:bg-violet/[.06] transition-all no-underline">
                   <span className={`w-[6px] h-[6px] rounded-full flex-shrink-0 ${dot}`}/>
-                  <span className="font-display text-[.5rem] sm:text-[.55rem] tracking-[.12em] text-navy-pale/60 hover:text-white transition-colors">{name}</span>
+                  <span className="font-display hover:text-white  text-[.5rem] sm:text-[.55rem] tracking-[.12em] text-whitw transition-colors">{name}</span>
                 </a>
               ))}
             </div>
@@ -86,26 +86,26 @@ export default function Contact() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="reveal reveal-delay-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
+            <div className="grid backdrop-blur-sm grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
               <div>
-                <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-navy-pale/60 block mb-2">Name</label>
+                <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-white block mb-2">Name</label>
                 <input name="name" value={form.name} onChange={handleChange} className="ku-input" placeholder="Your name" type="text" required/>
               </div>
               <div>
-                <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-navy-pale/60 block mb-2">Email</label>
+                <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-white block mb-2">Email</label>
                 <input name="email" value={form.email} onChange={handleChange} className="ku-input" placeholder="your@email.com" type="email" required/>
               </div>
             </div>
             <div className="mb-4 sm:mb-5">
-              <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-navy-pale/60 block mb-2">Subject</label>
+              <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-white block mb-2">Subject</label>
               <input name="subject" value={form.subject} onChange={handleChange} className="ku-input" placeholder="What's this about?" type="text"/>
             </div>
             <div className="mb-4 sm:mb-5">
-              <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-navy-pale/60 block mb-2">Project type</label>
+              <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-white block mb-2">Project type</label>
               <input name="type" value={form.type} onChange={handleChange} className="ku-input" placeholder="Music · 3D · Design · All three" type="text"/>
             </div>
             <div className="mb-4 sm:mb-5">
-              <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-navy-pale/60 block mb-2">Message</label>
+              <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-white block mb-2">Message</label>
               <textarea name="message" value={form.message} onChange={handleChange} className="ku-textarea" placeholder="Tell me about your universe…"/>
             </div>
             <button type="submit"

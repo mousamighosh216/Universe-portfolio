@@ -32,7 +32,7 @@ export default function Projects() {
         <div className="flex gap-2 sm:gap-3 mt-8 sm:mt-10 mb-8 sm:mb-10 flex-wrap reveal reveal-delay-2">
           {FILTERS.map(f => (
             <button key={f} onClick={() => setActive(f)}
-              className={`font-display text-[.48rem] sm:text-[.52rem] tracking-[.16em] sm:tracking-[.18em] uppercase px-3 sm:px-4 py-[.35rem] sm:py-[.38rem] border transition-all duration-200
+              className={`backdrop-blur-sm font-display text-[.48rem] sm:text-[.52rem] tracking-[.16em] sm:tracking-[.18em] uppercase px-3 sm:px-4 py-[.35rem] sm:py-[.38rem] border transition-all duration-200
                 ${active === f
                   ? 'border-violet text-white bg-violet/10'
                   : 'border-navy-pale/12 text-navy-pale/60 hover:border-violet/40 text-bold hover:text-white/80'}`}>
@@ -62,7 +62,7 @@ function ProjectCard({ project }) {
 
   return (
     <div className={`
-      project-card bg-navy/35 border border-navy-pale/12 overflow-hidden
+      backdrop-blur-sm project-card bg-navy/35 border border-navy-pale/12 overflow-hidden
       cursor-pointer transition-all duration-250 relative
       ${project.featured ? 'sm:col-span-2 lg:col-span-2' : ''}
     `}>

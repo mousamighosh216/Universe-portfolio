@@ -2,7 +2,7 @@ export default function Home({ scrollTo }) {
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center text-center px-5 sm:px-8">
 
-      <p className="font-body text-[.55rem] sm:text-[.6rem] font-medium tracking-[.3em] sm:tracking-[.42em] uppercase text-gray-pale/50 mb-5 sm:mb-6 animate-fade-up">
+      <p className="rounded-xl backdrop-blur-sm font-body text-[.55rem] sm:text-[.6rem] font-medium tracking-[.3em] sm:tracking-[.42em] uppercase text-gray-pale/50 mb-5 sm:mb-6 animate-fade-up">
         Multi-dimensional creator
       </p>
 
@@ -24,14 +24,14 @@ export default function Home({ scrollTo }) {
       </div>
 
       <p
-        className="font-body text-shadow text-[.8rem] sm:text-[.9rem] font-medium tracking-[.08em] sm:tracking-[.12em] text-white max-w-[300px] sm:max-w-sm leading-loose animate-fade-up"
+        className="font-body rounded-xl backdrop-blur-sm text-shadow text-[.8rem] sm:text-[.9rem] font-medium tracking-[.08em] sm:tracking-[.12em] text-white max-w-[300px] sm:max-w-sm leading-loose animate-fade-up"
         style={{ animationDelay: '.45s' }}
       >
         Where three-dimensional space and visual design converge into one creative universe
       </p>
 
       {/* Tag pills */}
-      <div className="flex gap-2 sm:gap-3 mt-7 sm:mt-9 flex-wrap justify-center animate-fade-up" style={{ animationDelay: '.6s' }}>
+      <div className="flex gap-2 rounded-xl backdrop-blur-sm sm:gap-3 mt-7 sm:mt-9 flex-wrap justify-center animate-fade-up" style={{ animationDelay: '.6s' }}>
         {[
           { label: '3D Render',page: 'projects', cls: 'text-white border-violet hover:bg-violet/10' },
           { label: 'Design',   page: 'projects', cls: 'text-white border-navy-pale hover:bg-navy-pale/10' },
@@ -45,7 +45,7 @@ export default function Home({ scrollTo }) {
 
       {/* Scroll hint */}
       <div className="absolute bottom-8 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
-        <span className="font-display text-[.48rem] sm:text-[.52rem] tracking-[.2em] sm:tracking-[.22em] uppercase text-gray-300 hover:text-white">Explore</span>
+        <span className="font-display rounded-xl backdrop-blur-sm text-[.48rem] sm:text-[.52rem] tracking-[.2em] sm:tracking-[.22em] uppercase text-gray-300 hover:text-white">Explore</span>
         <div className="scroll-line bg-white" />
       </div>
     </section>
