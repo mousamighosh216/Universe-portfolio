@@ -7,7 +7,6 @@ import useReveal     from './hooks/useReveal'
 import Home     from '@pages/Home'
 import About    from '@pages/About'
 import Projects from '@pages/Projects'
-import Music    from '@pages/Music'
 import Contact  from '@pages/Contact'
 
 export default function App() {
