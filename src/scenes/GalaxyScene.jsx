@@ -2,13 +2,8 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-export default function GalaxyScene({ currentPage, onLoaded }) {
+export default function GalaxyScene({ onLoaded }) {
   const canvasRef = useRef(null)
-  const stateRef  = useRef({ currentPage: 'home' })
-
-  useEffect(() => {
-    stateRef.current.currentPage = currentPage
-  }, [currentPage])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -154,9 +149,9 @@ export default function GalaxyScene({ currentPage, onLoaded }) {
     loader.load('/models/galaxy.glb', (gltf) => {
       const model = gltf.scene
       // scale the model
-      model.scale.set(5,5,5)
+      model.scale.set(4,4,4)
       // place it in the center
-      model.position.set(7,7,7)
+      model.position.set(6,6,6)
       // rotate if needed
       model.rotation.y = Math.PI / 2
       // add to galaxy so it rotates with it
@@ -253,6 +248,12 @@ export default function GalaxyScene({ currentPage, onLoaded }) {
     }
     document.addEventListener('mousemove', onMouseMove)
 
+       // Track scroll progress to subtly shift camera
+    let scrollRatio=0
+    const onScroll=()=>{scrollRatio=window.scrollY/(document.body.scrollHeight-window.innerHeight||1)}
+    window.addEventListener('scroll',onScroll,{passive:true})
+
+
     /* Resize */
     const onResize = () => {
       camera.aspect = W() / H()
@@ -264,76 +265,47 @@ export default function GalaxyScene({ currentPage, onLoaded }) {
     /* ── Animate ── */
     let rafId
     function animate() {
-      rafId = requestAnimationFrame(animate)
-      const t = clock.getElapsedTime()
+      rafId=requestAnimationFrame(animate)
+      const t=clock.getElapsedTime()
+      mouse.x+=(mouse.tx-mouse.x)*.04;mouse.y+=(mouse.ty-mouse.y)*.04
 
-      mouse.x += (mouse.tx - mouse.x) * .04
-      mouse.y += (mouse.ty - mouse.y) * .04
+      GALAXY.rotation.y=t*0.018
+      // Tilt galaxy slightly as user scrolls down the page
+      GALAXY.rotation.x=mouse.y*0.04+scrollRatio*0.15
+      GALAXY.rotation.z=-mouse.x*0.03
 
-      const isHome = stateRef.current.currentPage === 'home'
-      const tilt   = isHome ? 1 : .3
+      // Camera zooms out slowly as user scrolls down
+      CAM.targetY=22+scrollRatio*12
+      CAM.baseY+=(CAM.targetY-CAM.baseY)*.003
+      camera.position.x=Math.sin(t*CAM.driftSpd)*CAM.driftAmp+mouse.x*1.2
+      camera.position.y=CAM.baseY+Math.sin(t*CAM.driftSpd*.7)*.45
+      camera.position.z=Math.cos(t*CAM.driftSpd)*CAM.driftAmp+mouse.y*.9
+      camera.lookAt(mouse.x*.4,0,mouse.y*.25)
 
-      GALAXY.rotation.y = t * 0.018
-      GALAXY.rotation.x = mouse.y * 0.05 * tilt
-      GALAXY.rotation.z = -mouse.x * 0.035 * tilt
+      const br=1+Math.sin(t*1.1)*.08
+      cdisc.scale.setScalar(br);cdm.opacity=.09+Math.sin(t*1.1)*.02
+      cdisc2.scale.setScalar(br*1.05)
 
-      CAM.targetY = isHome ? 22 : 32
-      CAM.baseY  += (CAM.targetY - CAM.baseY) * .003
-      camera.position.x = Math.sin(t * CAM.driftSpd) * CAM.driftAmp + mouse.x * 1.2
-      camera.position.y = CAM.baseY + Math.sin(t * CAM.driftSpd * .7) * .45
-      camera.position.z = Math.cos(t * CAM.driftSpd) * CAM.driftAmp + mouse.y * .9
-      camera.lookAt(mouse.x * .4, 0, mouse.y * .25)
+      let cx3=0,cz3=0,hasHit=false
+      if(pActive){rayc.setFromCamera(mNDC,camera);if(rayc.ray.intersectPlane(gPlane,cWorld)){cx3=cWorld.x;cz3=cWorld.z;hasHit=true}}
+      const rTgt=(hasHit&&pActive)?.2:0;rOp+=(rTgt-rOp)*.1
+      if(rOp>.005){ring.visible=true;ringMat.opacity=rOp;ring.position.set(cx3,.05,cz3);ring.scale.setScalar(1+Math.sin(t*3.5)*.04)}
+      else ring.visible=false
 
-      const br = 1 + Math.sin(t * 1.1) * .08
-      cdisc.scale.setScalar(br);  cdm.opacity  = .09 + Math.sin(t * 1.1) * .02
-      cdisc2.scale.setScalar(br * 1.05)
-
-      /* Interactive stars */
-      let cx3 = 0, cz3 = 0, hasHit = false
-      if (pActive) {
-        rayc.setFromCamera(mNDC, camera)
-        if (rayc.ray.intersectPlane(gPlane, cWorld)) {
-          cx3 = cWorld.x; cz3 = cWorld.z; hasHit = true
-        }
+      const pa=iPA.array,sa=iSA.array;let atCnt=0
+      for(let i=0;i<IC;i++){
+        const i3=i*3,ox=iOrig[i3],oy=iOrig[i3+1],oz=iOrig[i3+2],px=pa[i3],py=pa[i3+1],pz=pa[i3+2]
+        if(hasHit){
+          const dx=ox-cx3,dz=oz-cz3,d=Math.sqrt(dx*dx+dz*dz)
+          if(d<AR){atCnt++;const t01=1-(d/AR),s=t01*t01*(3-2*t01)
+            pa[i3]+=(ox+(cx3-ox)*PULL*s-px)*ALRP;pa[i3+1]+=(oy+LIFT*s-py)*ALRP;pa[i3+2]+=(oz+(cz3-oz)*PULL*s-pz)*ALRP
+            sa[i]+=(iSzO[i]*(1+s*3.5)-sa[i])*.12
+          }else{pa[i3]+=(ox-px)*RLRP;pa[i3+1]+=(oy-py)*RLRP;pa[i3+2]+=(oz-pz)*RLRP;sa[i]+=(iSzO[i]-sa[i])*.06}
+        }else{pa[i3]+=(ox-px)*RLRP;pa[i3+1]+=(oy-py)*RLRP;pa[i3+2]+=(oz-pz)*RLRP;sa[i]+=(iSzO[i]-sa[i])*.06}
       }
-
-      const rTgt = (hasHit && pActive) ? .2 : 0
-      rOp += (rTgt - rOp) * .1
-      if (rOp > .005) {
-        ring.visible = true
-        ringMat.opacity = rOp
-        ring.position.set(cx3, .05, cz3)
-        ring.scale.setScalar(1 + Math.sin(t * 3.5) * .04)
-      } else { ring.visible = false }
-
-      const pa = iPA.array, sa = iSA.array
-      let atCnt = 0
-      for (let i = 0; i < IC; i++) {
-        const i3 = i * 3
-        const ox = iOrig[i3], oy = iOrig[i3+1], oz = iOrig[i3+2]
-        const px = pa[i3],    py = pa[i3+1],     pz = pa[i3+2]
-        if (hasHit) {
-          const dx = ox - cx3, dz = oz - cz3, d = Math.sqrt(dx*dx + dz*dz)
-          if (d < AR) {
-            atCnt++
-            const t01 = 1 - (d / AR), s = t01 * t01 * (3 - 2 * t01)
-            pa[i3]   += (ox + (cx3 - ox) * PULL * s - px) * ALRP
-            pa[i3+1] += (oy + LIFT * s - py) * ALRP
-            pa[i3+2] += (oz + (cz3 - oz) * PULL * s - pz) * ALRP
-            sa[i]    += (iSzO[i] * (1 + s * 3.5) - sa[i]) * .12
-          } else {
-            pa[i3]   += (ox - px) * RLRP; pa[i3+1] += (oy - py) * RLRP; pa[i3+2] += (oz - pz) * RLRP
-            sa[i]    += (iSzO[i] - sa[i]) * .06
-          }
-        } else {
-          pa[i3] += (ox - px) * RLRP; pa[i3+1] += (oy - py) * RLRP; pa[i3+2] += (oz - pz) * RLRP
-          sa[i]  += (iSzO[i] - sa[i]) * .06
-        }
-      }
-      iPA.needsUpdate = true; iSA.needsUpdate = true
-      iMat.uniforms.uAtt.value = 1 + (atCnt / IC) * 5
-
-      renderer.render(scene, camera)
+      iPA.needsUpdate=true;iSA.needsUpdate=true
+      iMat.uniforms.uAtt.value=1+(atCnt/IC)*5
+      renderer.render(scene,camera)
     }
     animate()
 
@@ -343,6 +315,7 @@ export default function GalaxyScene({ currentPage, onLoaded }) {
       document.removeEventListener('mousemove', onMove)
       document.removeEventListener('mouseleave', onLeave)
       document.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('scroll',onScroll)
       window.removeEventListener('resize', onResize)
       renderer.dispose()
     }

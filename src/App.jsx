@@ -1,106 +1,106 @@
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import GalaxyScene   from '@scenes/GalaxyScene'
-import Navbar        from '@components/Navbar'
 import LoadingScreen from '@components/LoadingScreen'
+import Navbar        from '@components/Navbar'
+import useReveal     from './hooks/useReveal'
+
 import Home     from '@pages/Home'
 import About    from '@pages/About'
 import Projects from '@pages/Projects'
 import Music    from '@pages/Music'
 import Contact  from '@pages/Contact'
 
-const PAGES = { home: Home, about: About, projects: Projects, music: Music, contact: Contact }
-
 export default function App() {
-  const [loaded,       setLoaded]       = useState(false)
-  const [currentPage,  setCurrentPage]  = useState('home')
-  const [transitioning,setTransitioning]= useState(false)
+  const [loaded, setLoaded] = useState(false)
 
-  const navigate = useCallback((id) => {
-    if (id === currentPage || transitioning) return
-    setTransitioning(true)
-    setTimeout(() => { setCurrentPage(id); setTransitioning(false) }, 350)
-  }, [currentPage, transitioning])
+  // Wire up scroll-reveal for all .reveal elements
+  useReveal()
 
-  const PageComponent = PAGES[currentPage]
+  // Smooth-scroll helper passed to nav + hero CTA buttons
+  const scrollTo = (id) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
-    <div className="w-full h-full relative overflow-hidden bg-navy-dark">
+    <div className="relative">
 
-      {/* Galaxy canvas — always mounted */}
-      <GalaxyScene currentPage={currentPage}  onLoaded={() => setLoaded(true)} />
+      {/* ── Galaxy fixed behind everything ── */}
+            <GalaxyScene  onLoaded={() => setLoaded(true)} />
 
-      {/* Vignette */}
-      <div className="fixed inset-0 z-[5] pointer-events-none transition-all duration-700"
-        style={{
-          background: currentPage === 'home'
-            ? 'radial-gradient(ellipse at center, transparent 25%, rgba(5,13,31,.72) 100%)'
-            : 'radial-gradient(ellipse at 20% 50%, transparent 30%, rgba(5,13,31,.9) 100%)',
-        }}
+      {/* ── Fixed vignette overlay ── */}
+      <div
+        className="fixed inset-0 z-[2] pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at center, transparent 20%, rgba(5,13,31,.75) 100%)' }}
       />
 
-      {/* Cursor glow — desktop only */}
+      {/* ── Cursor glow (desktop) ── */}
       <CursorGlow />
 
-      {/* Loader */}
-      {!loaded && <LoadingScreen />}
+      {/* ── Loader ── */}
+      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
 
-      {/* Nav */}
-      {loaded && <Navbar currentPage={currentPage} navigate={navigate} />}
+      {/* ── Fixed nav ── */}
+      {loaded && <Navbar scrollTo={scrollTo} />}
 
-      {/* Page */}
+      {/* ── The one scrollable page ── */}
       {loaded && (
-        <main
-          id="page-scroll"
-          className={`
-            fixed inset-0 z-10 overflow-y-auto overflow-x-hidden page-scroll
-            transition-all duration-[350ms]
-            ${transitioning ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}
-          `}
-        >
-          <PageComponent navigate={navigate} />
+        <main className="relative z-10">
+          <Home    scrollTo={scrollTo} />
+          <About   />
+          <Projects />
+          {/* <Music   scrollTo={scrollTo} /> */}
+          <Contact />
+          <Footer  />
         </main>
       )}
-
-      {/* Bottom bar — hidden on small screens */}
-      {loaded && <BottomBar />}
     </div>
   )
 }
 
+/* ── Sticky cursor glow ── */
 function CursorGlow() {
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const move = e => { el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px' }
+    document.addEventListener('mousemove', move)
+    return () => document.removeEventListener('mousemove', move)
+  }, [])
   return (
-    <div
-      id="cursor-glow"
-      className="hidden md:block fixed w-80 h-80 rounded-full pointer-events-none z-[4]"
+    <div ref={ref}
+      className="hidden md:block fixed w-80 h-80 rounded-full pointer-events-none z-[3]"
       style={{
         background: 'radial-gradient(circle, rgba(142,49,164,.07) 0%, transparent 70%)',
-        transform: 'translate(-50%, -50%)',
+        transform: 'translate(-50%,-50%)',
         left: '-999px', top: '-999px',
-      }}
-      ref={el => {
-        if (!el) return
-        const move = e => { el.style.left = e.clientX + 'px'; el.style.top = e.clientY + 'px' }
-        document.addEventListener('mousemove', move)
       }}
     />
   )
 }
 
-function BottomBar() {
+/* ── Page footer ── */
+function Footer() {
   return (
-    <div className="hidden sm:flex fixed bottom-0 left-0 right-0 z-10 items-end justify-between px-6 sm:px-8 lg:px-12 pb-5 lg:pb-7 pointer-events-none">
-      <div className="font-display text-[.48rem] tracking-[.12em] text-navy-pale/20 leading-loose">
-        <div>RA 17h 45m 40s</div>
-        <div>Dec −29° 00′ 28″</div>
+    <footer className="relative z-10 border-t border-navy-pale/10 py-10 px-5 sm:px-8 lg:px-16">
+      <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="font-display font-black text-[.8rem] tracking-[.28em] text-white">
+          KUN<span className="text-coral">I</span>VERSE
+        </div>
+        <div className="flex gap-6">
+          {['Behance','ArtStation','SoundCloud','Instagram'].map(s => (
+            <a key={s} href="#"
+              className="font-body text-[.62rem] tracking-[.1em] text-navy-pale/40 hover:text-violet-light transition-colors no-underline">
+              {s}
+            </a>
+          ))}
+        </div>
+        <div className="font-display text-[.48rem] tracking-[.12em] text-navy-pale/20 text-center sm:text-right leading-loose">
+          <div>RA 17h 45m 40s · Dec −29° 00′ 28″</div>
+          <div>© 2024 Kuniverse. All rights reserved.</div>
+        </div>
       </div>
-      <div className="flex flex-col items-end gap-[.35rem]">
-        {['Twitter','Instagram','LinkedIn'].map(s => (
-          <a key={s} href="#"
-            className="font-body text-[.56rem] tracking-[.1em] text-navy-pale/22 no-underline hover:text-violet-light transition-colors pointer-events-auto">
-            {s}
-          </a>
-        ))}
-      </div>
-    </div>
+    </footer>
   )
 }

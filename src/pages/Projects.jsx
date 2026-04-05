@@ -20,7 +20,7 @@ export default function Projects() {
   const filtered = active === 'all' ? projects : projects.filter(p => p.category === active)
 
   return (
-    <div className="pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24">
+    <div id="projects" className="pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-12">
 
         <SectionHeader
@@ -29,13 +29,13 @@ export default function Projects() {
         />
 
         {/* Filter bar */}
-        <div className="flex gap-2 sm:gap-3 mt-8 sm:mt-10 mb-8 sm:mb-10 flex-wrap">
+        <div className="flex gap-2 sm:gap-3 mt-8 sm:mt-10 mb-8 sm:mb-10 flex-wrap reveal reveal-delay-2">
           {FILTERS.map(f => (
             <button key={f} onClick={() => setActive(f)}
               className={`font-display text-[.48rem] sm:text-[.52rem] tracking-[.16em] sm:tracking-[.18em] uppercase px-3 sm:px-4 py-[.35rem] sm:py-[.38rem] border transition-all duration-200
                 ${active === f
-                  ? 'border-violet text-violet-light bg-violet/10'
-                  : 'border-navy-pale/12 text-navy-pale/60 hover:border-violet/40 hover:text-violet-pale'}`}>
+                  ? 'border-violet text-white bg-violet/10'
+                  : 'border-navy-pale/12 text-navy-pale/60 hover:border-violet/40 text-bold hover:text-white/80'}`}>
               {f === 'all' ? 'All' : f === '3d' ? '3D Render' : f.charAt(0).toUpperCase() + f.slice(1)}
             </button>
           ))}

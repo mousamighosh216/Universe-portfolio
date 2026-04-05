@@ -14,7 +14,7 @@ const TIMELINE = [
 
 export default function About() {
   return (
-    <div className="pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24">
+    <div id="about" className="pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24">
       <div className="max-w-[1100px] mx-auto px-5 sm:px-8 lg:px-12">
 
         <SectionHeader
@@ -27,7 +27,7 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-20 mt-12 lg:mt-16 items-start">
 
           {/* ── Photo + stats ── */}
-          <div className="max-w-sm mx-auto w-full lg:max-w-none">
+          <div className="reveal reveal-delay-2 max-w-sm mx-auto w-full lg:max-w-none">
             <div className="relative">
               {/* On mobile shrink to 3:4, full 4:5 on desktop */}
               <div className="w-full aspect-[3/4] sm:aspect-[4/5] bg-navy border border-navy-pale/12 overflow-hidden relative">
@@ -61,11 +61,11 @@ export default function About() {
 
           {/* ── Bio + skills + timeline ── */}
           <div>
-            <p className="font-body text-[.85rem] sm:text-[.9rem] font-light leading-loose text-violet-pale/75 mb-4">
-              A multi-disciplinary creator orbiting the edges of music production, 3D rendering and graphic design.
+            <p className="font-body text-[.85rem] sm:text-[.9rem] font-bold leading-loose text-white/80 mb-4">
+              A multi-disciplinary creator orbiting the edges of 3D rendering and graphic design.
               Every project is a new galaxy — unexplored, infinite and entirely its own.
             </p>
-            <p className="font-body text-[.85rem] sm:text-[.9rem] font-light leading-loose text-violet-pale/75">
+            <p className="font-body text-[.85rem] sm:text-[.9rem] font-bold leading-loose text-white/80">
               Based in the physical world, working across every dimension. From a single guitar riff to a full
               motion-graphic universe — if it can be imagined, it gets built.
             </p>
@@ -75,13 +75,13 @@ export default function About() {
               {SKILLS.map(({ cat, items }) => (
                 <div key={cat} className="mb-6 sm:mb-7">
                   <div className="flex items-center gap-3 mb-3">
-                    <span className="font-display text-[.52rem] sm:text-[.55rem] tracking-[.2em] sm:tracking-[.22em] uppercase text-violet-light">{cat}</span>
+                    <span className="font-display font-bold text-[.52rem] sm:text-[.55rem] tracking-[.2em] sm:tracking-[.22em] uppercase text-coral">{cat}</span>
                     <div className="flex-1 h-px bg-gradient-to-r from-violet-light/20 to-transparent" />
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {items.map(item => (
                       <span key={item}
-                        className="font-body text-[.65rem] sm:text-[.68rem] font-medium tracking-[.06em] sm:tracking-[.08em] px-2.5 sm:px-3 py-1 border border-navy-pale/12 text-navy-pale/75 hover:border-violet/40 hover:text-violet-pale hover:bg-violet/[.06] transition-all cursor-default">
+                        className="font-body text-[.65rem] sm:text-[.68rem] font-medium tracking-[.06em] sm:tracking-[.08em] px-2.5 sm:px-3 py-1 border border-navy-pale/12 text-navy-pale/75 hover:border-violet/40 hover:text-white hover:bg-violet/[.06] transition-all cursor-default">
                         {item}
                       </span>
                     ))}
@@ -96,7 +96,7 @@ export default function About() {
                 <div key={year} className="relative mb-7 sm:mb-9 timeline-dot">
                   <div className="font-display text-[.52rem] sm:text-[.55rem] tracking-[.18em] sm:tracking-[.2em] text-coral mb-1">{year}</div>
                   <div className="font-body text-[.82rem] sm:text-[.85rem] font-bold tracking-[.04em] sm:tracking-[.05em] text-white">{title}</div>
-                  <div className="font-body text-[.72rem] sm:text-[.75rem] font-light text-navy-pale/60 mt-1 leading-loose">{desc}</div>
+                  <div className="font-body text-[.72rem] sm:text-[.75rem] font-light text-gray/60 mt-1 leading-loose">{desc}</div>
                 </div>
               ))}
             </div>

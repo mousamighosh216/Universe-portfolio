@@ -3,177 +3,132 @@
 @tailwind utilities;
 
 /* ── Base ── */
-html, body, #root {
-  width: 100%;
-  height: 100%;
-}
-
+html { scroll-behavior: smooth; }
+html, body, #root { width: 100%; }
 body {
   background: #050d1f;
-  overflow: hidden;
   font-family: 'Syne', sans-serif;
   color: #e8e0f0;
+  overflow-x: hidden;
 }
 
-/* ── Scrollbar ── */
-.page-scroll::-webkit-scrollbar { width: 3px; }
-.page-scroll::-webkit-scrollbar-track { background: transparent; }
-.page-scroll::-webkit-scrollbar-thumb {
-  background: rgba(142, 49, 164, 0.4);
-  border-radius: 2px;
-}
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(142,49,164,.4); border-radius: 2px; }
 
-/* ── Border gradient trick (can't do in Tailwind) ── */
-.border-coral-gradient {
-  border: 1px solid transparent;
-  background-clip: padding-box;
-  position: relative;
-}
-.border-coral-gradient::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(142,49,164,.5), transparent, rgba(255,87,87,.3));
-  z-index: -1;
-}
-
-/* ── Nav underline active ── */
-.nav-link {
-  position: relative;
-  padding-bottom: 3px;
-}
+/* ── Nav active underline ── */
+.nav-link { position: relative; padding-bottom: 3px; }
 .nav-link::after {
   content: '';
   position: absolute;
   bottom: 0; left: 0;
   width: 0; height: 1px;
   background: #ff5757;
-  transition: width 0.3s ease;
+  transition: width .3s ease;
 }
-.nav-link:hover::after,
-.nav-link.active::after { width: 100%; }
+.nav-link.active::after,
+.nav-link:hover::after { width: 100%; }
 
-/* ── Project card hover overlay ── */
-.project-card .overlay {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.project-card:hover .overlay { opacity: 1; }
+/* ── Section reveal — applied by IntersectionObserver ── */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .32s; }
+.reveal-delay-4 { transition-delay: .44s; }
+
+/* ── Project card hover ── */
+.project-card { transition: transform .25s, border-color .25s; }
 .project-card:hover { transform: translateY(-4px); }
+.project-card .card-overlay { opacity: 0; transition: opacity .3s; }
+.project-card:hover .card-overlay { opacity: 1; }
 
-/* ── Track bar sweep ── */
-.track-row .track-bar {
-  position: absolute;
-  bottom: 0; left: 0;
+/* ── Track row ── */
+.track-row { position: relative; }
+.track-bar {
+  position: absolute; bottom: 0; left: 0;
   width: 0; height: 1px;
   background: linear-gradient(90deg, #8e31a4, #ff5757);
-  transition: width 0.3s ease;
+  transition: width .3s ease;
 }
 .track-row:hover .track-bar { width: 100%; }
 
-/* ── Waveform bars ── */
+/* ── Waveform ── */
 .wave-bar {
-  width: 3px;
-  border-radius: 2px;
+  width: 3px; border-radius: 2px;
   background: linear-gradient(to top, #8e31a4, #ff5757);
   animation: wave var(--dur, 1.4s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
 @keyframes wave {
-  0%, 100% { transform: scaleY(0.15); opacity: 0.4; }
-  50%       { transform: scaleY(1);   opacity: 0.9; }
+  0%,100% { transform: scaleY(.15); opacity: .4; }
+  50%      { transform: scaleY(1);   opacity: .9; }
 }
 
-/* ── Form inputs override browser defaults ── */
+/* ── Form inputs ── */
 .ku-input, .ku-textarea {
   width: 100%;
-  background: rgba(14, 31, 72, 0.4);
-  border: 1px solid rgba(136, 153, 204, 0.12);
+  background: rgba(14,31,72,.4);
+  border: 1px solid rgba(136,153,204,.12);
   color: #e8e0f0;
   font-family: 'Syne', sans-serif;
-  font-size: 0.82rem;
-  padding: 0.75rem 1rem;
+  font-size: .82rem;
+  padding: .75rem 1rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color .2s, background .2s;
   resize: none;
+  -webkit-appearance: none;
 }
 .ku-input:focus, .ku-textarea:focus {
-  border-color: rgba(142, 49, 164, 0.5);
-  background: rgba(14, 31, 72, 0.6);
+  border-color: rgba(142,49,164,.5);
+  background: rgba(14,31,72,.6);
 }
-.ku-input::placeholder, .ku-textarea::placeholder {
-  color: rgba(136, 153, 204, 0.25);
-}
+.ku-input::placeholder, .ku-textarea::placeholder { color: rgba(136,153,204,.25); }
 .ku-textarea { height: 130px; line-height: 1.6; }
 
-/* ── Scroll line ── */
-@keyframes scrollLine {
-  0%, 100% { opacity: .35; transform: scaleY(.85); }
-  50%       { opacity: .85; transform: scaleY(1); }
-}
+/* ── Scroll indicator ── */
 .scroll-line {
   width: 1px; height: 44px;
   background: linear-gradient(to bottom, rgba(136,153,204,.5), transparent);
   animation: scrollLine 2.2s ease-in-out infinite;
 }
-
-/* ── Page transition ── */
-.page-enter {
-  opacity: 0;
-  transform: translateY(16px);
-}
-.page-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.page-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-.page-exit-active {
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+@keyframes scrollLine {
+  0%,100% { opacity:.35; transform:scaleY(.85); }
+  50%      { opacity:.85; transform:scaleY(1); }
 }
 
 /* ── Timeline dot ── */
+.timeline-dot { position: relative; }
 .timeline-dot::before {
   content: '';
   position: absolute;
-  left: -2.35rem;
-  top: 0.35rem;
+  left: -1.75rem; top: .35rem;
   width: 7px; height: 7px;
   border-radius: 50%;
   background: #8e31a4;
   border: 1px solid #b85fca;
 }
+@media(min-width:640px) { .timeline-dot::before { left: -2.35rem; } }
 
-/* ── Loader progress fill gradient ── */
-.loader-fill {
-  background: linear-gradient(90deg, #8e31a4, #ff5757);
+/* ── Loader fill ── */
+.loader-fill { background: linear-gradient(90deg, #8e31a4, #ff5757); }
+
+/* ── Divider line with label ── */
+.labeled-divider {
+  position: relative;
+  font-family: 'Orbitron', sans-serif;
+  font-size: .5rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #b85fca;
+  background: #050d1f;
+  padding: 0 .75rem;
 }
 
-/* ── Responsive timeline dot position ── */
-@media (max-width: 639px) {
-  .timeline-dot::before { left: -1.75rem; }
-}
-
-/* ── xs display helper (≥ 475px) ── */
-@media (min-width: 475px) {
-  .xs\:inline { display: inline !important; }
-}
-
-/* ── Touch devices: remove hover-only effects ── */
-@media (hover: none) {
+/* ── Touch: remove hover-only effects ── */
+@media(hover:none) {
   .project-card:hover { transform: none !important; }
-  .project-card .overlay { opacity: 0 !important; }
+  .project-card .card-overlay { opacity: 0 !important; }
   .track-row:hover .track-bar { width: 0 !important; }
-  .project-card:active .overlay { opacity: 1 !important; }
-}
-
-/* ── Prevent horizontal overflow on mobile ── */
-@media (max-width: 640px) {
-  .page-scroll { overflow-x: hidden; }
 }
