@@ -26,12 +26,11 @@ export default function App() {
     <div className="relative">
 
       {/* ── Galaxy fixed behind everything ── */}
-            <GalaxyScene  onLoaded={() => setLoaded(true)} />
+            <GalaxyScene />
 
       {/* ── Fixed vignette overlay ── */}
       <div
-        className="fixed inset-0 z-[2] pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at center, transparent 20%, rgba(5,13,31,.75) 100%)' }}
+        className="fixed inset-0 z-[2] pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(5,13,31,1.1)_80%)]"
       />
 
       {/* ── Cursor glow (desktop) ── */}

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
-export default function GalaxyScene({ onLoaded }) {
+export default function GalaxyScene() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
