@@ -37,7 +37,7 @@ export default function Home({ scrollTo }) {
           { label: 'Design',   page: 'projects', cls: 'text-white border-navy-pale hover:bg-navy-pale/10' },
         ].map(({ label, page, cls }) => (
           <button key={label} onClick={() => navigate(page)}
-            className={`font-display rounded-xl backdrop-blur-sm text-[.46rem] sm:text-[.5rem] tracking-[.16em] sm:tracking-[.18em] uppercase border px-3 sm:px-[.9rem] py-[.3rem] sm:py-[.33rem] transition-all duration-250 ${cls}`}>
+            className={`font-display backdrop-blur-sm text-[.46rem] sm:text-[.5rem] tracking-[.16em] sm:tracking-[.18em] uppercase border px-3 sm:px-[.9rem] py-[.3rem] sm:py-[.33rem] transition-all duration-250 ${cls}`}>
             {label}
           </button>
         ))}
