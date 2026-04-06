@@ -86,7 +86,7 @@ export default function Contact() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="reveal reveal-delay-3">
-            <div className="grid backdrop-blur-sm grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
+            <div className="grid  grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mb-4 sm:mb-5">
               <div>
                 <label className="font-display text-[.5rem] tracking-[.18em] uppercase text-white block mb-2">Name</label>
                 <input name="name" value={form.name} onChange={handleChange} className="ku-input" placeholder="Your name" type="text" required/>
@@ -109,7 +109,7 @@ export default function Contact() {
               <textarea name="message" value={form.message} onChange={handleChange} className="ku-textarea" placeholder="Tell me about your universe…"/>
             </div>
             <button type="submit"
-              className="w-full flex items-center justify-center gap-3 font-display text-[.56rem] sm:text-[.6rem] tracking-[.18em] uppercase text-white border border-coral/45 py-3 hover:bg-coral hover:border-coral transition-all duration-250">
+              className="w-full backdrop-blur-sm flex items-center justify-center gap-3 font-display text-[.56rem] sm:text-[.6rem] tracking-[.18em] uppercase text-white border border-coral/45 py-3 hover:bg-coral hover:border-coral transition-all duration-250">
               {sent
                 ? <><span>Transmission sent</span><span className="text-base">✓</span></>
                 : <><span>Send Transmission</span><span className="text-base">→</span></>}
