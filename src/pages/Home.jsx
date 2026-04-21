@@ -24,7 +24,7 @@ export default function Home({ scrollTo }) {
       </div>
 
       <p
-        className="font-body rounded-xl backdrop-blur-sm text-shadow text-[.8rem] sm:text-[.9rem] font-medium tracking-[.08em] sm:tracking-[.12em] text-white max-w-[300px] sm:max-w-sm leading-loose animate-fade-up"
+        className="font-body rounded-xl text-shadow text-[.8rem] sm:text-[.9rem] font-medium tracking-[.08em] sm:tracking-[.12em] text-white max-w-[300px] sm:max-w-sm leading-loose animate-fade-up"
         style={{ animationDelay: '.45s' }}
       >
         Where three-dimensional space and visual design converge into one creative universe

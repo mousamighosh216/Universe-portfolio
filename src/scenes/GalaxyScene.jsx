@@ -15,7 +15,7 @@ export default function GalaxyScene() {
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
     renderer.setSize(W(), H())
     renderer.toneMapping = THREE.ACESFilmicToneMapping
-    renderer.toneMappingExposure = 1.1
+    renderer.toneMappingExposure = 0.4
 
     const manager = new THREE.LoadingManager()
     const scene  = new THREE.Scene()
@@ -142,14 +142,14 @@ export default function GalaxyScene() {
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.7))
     const dirLight = new THREE.DirectionalLight(0xffffff, 1.5)
-    dirLight.position.set(5,10,5)
+    dirLight.position.set(5,5,5)
     scene.add(dirLight)
 
     /* ── Load GLB Model ── */
     loader.load('/models/galaxy.glb', (gltf) => {
       const model = gltf.scene
       // scale the model
-      model.scale.set(4,4,4)
+      model.scale.set(5,5,5)
       // place it in the center
       model.position.set(6,6,6)
       // rotate if needed
