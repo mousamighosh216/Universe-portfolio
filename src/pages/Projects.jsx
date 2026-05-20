@@ -74,9 +74,14 @@ function ProjectCard({ project }) {
           </span>
         </div>
         <div className={`overlay absolute inset-0 ${overlayCol} flex items-center justify-center`}>
-          <div className="font-display text-[.52rem] sm:text-[.55rem] tracking-[.15em] sm:tracking-[.18em] border border-white/50 px-3 sm:px-4 py-2 text-white bg-navy-dark/60">
-            View Project
-          </div>
+            <a
+              href={project.links}
+              target="_blank"
+              rel="noreferrer"
+              className="font-display text-[.52rem] sm:text-[.55rem] tracking-[.15em] sm:tracking-[.18em] border border-white/50 px-3 sm:px-4 py-2 text-white bg-navy-dark/60"
+            >
+              View Project
+            </a>
         </div>
       </div>
 
